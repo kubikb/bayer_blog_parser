@@ -1,4 +1,6 @@
 # Parser for Bayer Zsolt's blog
+[![Build Status](https://travis-ci.org/kubikb/bayer_blog_parser.svg?branch=master)](https://travis-ci.org/kubikb/bayer_blog_parser)
+
 This repo contains a minimal Python library for parsing posts from the [blog of Bayer Zsolt](https://badog.blogstar.hu), a well-know political publicist in Hungary. I developed it _some time ago_ when I needed a Hungarian text corpus for NLP experiments.
 
 ## Usage

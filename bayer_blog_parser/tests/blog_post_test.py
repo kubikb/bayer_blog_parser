@@ -10,7 +10,7 @@ from bayer_blog_parser.blog_post import BlogPost
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), u'data')
 test_post_soup = BeautifulSoup(
 	file(os.path.join(DATA_FOLDER, "post.html"), "r").read(),
-	"lxml"
+	"html.parser"
 )
 test_post_content = codecs.open(os.path.join(DATA_FOLDER, "post_full_html.html"), "r", "utf-8").read()
 
