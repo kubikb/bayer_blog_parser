@@ -12,6 +12,11 @@ test_post_soup = BeautifulSoup(
 	file(os.path.join(DATA_FOLDER, "post.html"), "r").read(),
 	"html.parser"
 )
+test_post_without_thumbnail = BeautifulSoup(
+	file(os.path.join(DATA_FOLDER, "post_without_thumbnail.html"), "r").read(),
+	"html.parser"
+)
+
 test_post_content = codecs.open(os.path.join(DATA_FOLDER, "post_full_html.html"), "r", "utf-8").read()
 
 test_post_text = codecs.open(os.path.join(DATA_FOLDER, "post_content.txt"), "r", "utf-8").read()
@@ -30,11 +35,7 @@ class TestBlogPost(unittest.TestCase):
 		)
 
 	def test_missing_thumbnail(self):
-		post_soup = BeautifulSoup(
-			file(os.path.join(DATA_FOLDER, "post_without_thumbnail.html"), "r").read(),
-			"lxml"
-		)
-		test_instance = BlogPost(post_soup)
+		test_instance = BlogPost(test_post_without_thumbnail)
 		self.assertEqual(
 			test_instance.thumbnail_url,
 			None
