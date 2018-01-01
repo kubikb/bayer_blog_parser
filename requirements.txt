@@ -1,0 +1,5 @@
+beautifulsoup4
+joblib
+nose
+requests
+requests_mock
