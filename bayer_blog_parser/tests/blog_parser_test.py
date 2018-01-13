@@ -10,25 +10,40 @@ test_page_content = codecs.open(os.path.join(DATA_FOLDER, "page_full_html.html")
 empty_page_content = codecs.open(os.path.join(DATA_FOLDER, "empty_page.html"), "r", "utf-8").read()
 base_url = "https://badog.blogstar.hu"
 
-class TestBayerBlogParser(unittest.TestCase):
+class TestBlogParser(unittest.TestCase):
 
 	def test_init_wrong_depth(self):
 		with self.assertRaises(BayerBlogParserException):
 			BayerBlogParser(depth="wrong_input")
 
+	def test_depth_larger_than_total_num_pages(self):
+		with requests_mock.mock() as m:
+			m.get(base_url, text=test_page_content)
+
+			parser = BayerBlogParser(depth=999999)
+			self.assertEqual(parser.depth, 114)
+
 	def test_collect_posts(self):
-		num_pages = 13
-		depth = 999
+		depth = 12
 
 		with requests_mock.mock() as m:
-			for i in range(1, num_pages):
+
+			# Main page
+			m.get(base_url, text=test_page_content)
+
+			for i in range(1, depth):
 				m.get('%s/?p=%s' % (base_url, i),
 					  text=test_page_content)
 
-			# Last page
-			m.get('%s/?p=%s' % (base_url, num_pages),
-				  text=empty_page_content)
-
 			parser = BayerBlogParser(depth=depth)
 			blogposts = parser.list_all_posts()
-			self.assertEqual(len(blogposts), 10 * (num_pages - 1))
+			self.assertEqual(len(blogposts), 10 * (depth))
+
+	def test_get_last_page_index(self):
+		with requests_mock.mock() as m:
+			m.get(base_url, text=test_page_content)
+
+			parser = BayerBlogParser()
+			last_page_index = parser.get_last_page_index()
+
+			self.assertEqual(last_page_index, 114)

@@ -1,6 +1,5 @@
-from bs4 import BeautifulSoup
 import logging as log
-import requests
+import bayer_blog_parser.connection_utils as conn_utils
 
 
 class BlogPost:
@@ -81,8 +80,7 @@ class BlogPost:
 
 	def __parse_full_content(self):
 		url = self.url
-		content_text = requests.get(url).text
-		soup = BeautifulSoup(content_text, "html.parser")
+		soup = conn_utils.get_soup_from_url(url)
 		article_description = soup\
 			.find("article", {"class": "blogPost"})\
 			.find("div", {"class": "description"})
